@@ -1,0 +1,73 @@
+From c09ae3fdf373bb77e5546c6e0ab5fefed03f8f5b Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Thu, 8 Aug 2024 15:28:57 +0800
+Subject: [PATCH] install
+
+---
+ FreeSSM.desktop | 11 +++++++++++
+ FreeSSM.pro     | 16 +++++++++-------
+ 2 files changed, 20 insertions(+), 7 deletions(-)
+ create mode 100644 FreeSSM.desktop
+
+diff --git a/FreeSSM.desktop b/FreeSSM.desktop
+new file mode 100644
+index 0000000..538dee3
+--- /dev/null
++++ b/FreeSSM.desktop
+@@ -0,0 +1,11 @@
++[Desktop Entry]
++Categories=Accessibility;Qt;Utility;
++Exec=FreeSSM
++Name=FreeSSM
++Name[zh_CN]=FreeSSM
++Icon=FreeSSM
++StartupNotify=false
++Terminal=false
++Type=Application
++GenericName=FreeSSM
++Version=1.2.5
+\ No newline at end of file
+diff --git a/FreeSSM.pro b/FreeSSM.pro
+index 6051663..4c7ad6c 100644
+--- a/FreeSSM.pro
++++ b/FreeSSM.pro
+@@ -185,19 +185,21 @@ greaterThan(QT_MAJOR_VERSION, 5):greaterThan(QT_MINOR_VERSION, 1) {
+ 
+ # Installation
+ isEmpty(INSTALLDIR) {
+-    unix:INSTALLDIR = $$system(echo ~)/FreeSSM
++    unix:INSTALLDIR = $$PREFIX
+     win32:INSTALLDIR = $$system(echo %homedrive%)/FreeSSM
+ }
+-target.path = $$INSTALLDIR
+-filestarget.path = $$INSTALLDIR
++desktop.path =  $$PREFIX/share/applications/
++desktop.files = FreeSSM.desktop
++target.path = $$PREFIX/bin
++filestarget.path = $$PREFIX/share/icons
+ filestarget.files = background.png LiberationSans*.ttf
+ unix:filestarget.files += resources/icons/freessm/48x48/FreeSSM.png
+-doctarget.path = $$INSTALLDIR/doc
++doctarget.path = $$PREFIX/doc
+ doctarget.files = doc/*
+-defstarget.path = $$INSTALLDIR/definitions
++defstarget.path = $$PREFIX/definitions
+ defstarget.files = definitions/SSM1defs_*.xml
+ translation.commands = $$[QT_INSTALL_BINS]/lrelease FreeSSM.pro
+-translation.path = $$INSTALLDIR
++translation.path = $$PREFIX
+ translation.files = $$TRANSLATIONS_BIN  #NOTE: wildcards don't work (if the *.qm files don't exist yet when qmake is run, it creates a non-working installation command using the wildcard name as destination name)
+ translation.CONFIG += no_check_exist    #NOTE: files do not exist yet when qmake is run
+ win32 {
+@@ -251,7 +253,7 @@ win32 {
+ unix {
+     defstarget.files += definitions/J2534libs.xml
+ }
+-INSTALLS += target doctarget defstarget filestarget translation
++INSTALLS += target doctarget defstarget filestarget translation desktop
+ win32:INSTALLS += dllstarget platformstarget
+ 
+ 
+-- 
+2.43.4
+
